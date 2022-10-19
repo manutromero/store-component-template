@@ -14,12 +14,14 @@ const CSS_HANDLES = [
   'someHandle5',
   'someHandle6',
   'someHandle7',
+  'someHandle10'
 ] as const
 
 const MyComponent: StorefrontFunctionComponent<MyComponentProps> = ({
   someString,
   awesomeArray,
   awesomeObjectArray,
+  activar
 }) => {
   const handles = useCssHandles(CSS_HANDLES)
   const { formatMessage } = useIntl()
@@ -28,8 +30,10 @@ const MyComponent: StorefrontFunctionComponent<MyComponentProps> = ({
   return (
     <div>
       {/* Editable props on SiteEditor */}
-      <div className={`${handles.someHandle1}`}>
+      <div className={`${activar ? handles.someHandle1 : handles.someHandle10}`}>
         <p>{someString}</p>
+        <p>Abajo debe estar el campo true</p>
+        <p>{activar}</p>
       </div>
 
       {/* International string from messages framework */}
@@ -64,6 +68,7 @@ const MyComponent: StorefrontFunctionComponent<MyComponentProps> = ({
         {awesomeObjectArray?.map(({ someString, someInt, image }: AwesomeObject, index) => (
           <div key={index}>
             <p>{someString}</p>
+            <p>{activar}</p>
             <p>{someInt}</p>
             <img src={image} alt={someString} />
           </div>
@@ -77,6 +82,19 @@ const MyComponent: StorefrontFunctionComponent<MyComponentProps> = ({
 MyComponent.schema = {
   title: 'MyComponent Title',
   description: 'MyComponent description',
+  type: "object",
+  properties:{
+    someString:{
+      title: "SomeString Title",
+      description: "Esta es una descripcion general",
+      type: "string",
+      default: "Somestring default value"
+    },
+    activar:{
+      title: "Activar si quiere",
+      type: "boolean"
+    }
+  }
 }
 
 export default MyComponent
